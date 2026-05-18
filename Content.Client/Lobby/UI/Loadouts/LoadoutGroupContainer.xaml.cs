@@ -72,15 +72,6 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
             });
         }
 
-        if (protoMan.TryIndex(loadout.Role, out var roleProto) && roleProto.Points != null && loadout.Points != null)
-        {
-            RestrictionsContainer.AddChild(new Label()
-            {
-                Text = Loc.GetString("loadouts-points-limit", ("count", loadout.Points.Value), ("max", roleProto.Points.Value)),
-                Margin = new Thickness(5, 0, 5, 5),
-            });
-        }
-
         LoadoutsContainer.DisposeAllChildren();
 
         // Get all loadout prototypes for this group.
@@ -237,10 +228,7 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
 
         var cont = new LoadoutContainer(proto, !enabled, reason);
 
-        var name = string.IsNullOrEmpty(proto.Name) ? loadoutSystem.GetName(proto) : proto.Name;
-        cont.Text = proto.Price > 0
-            ? Loc.GetString("loadouts-cost-label", ("name", name), ("cost", proto.Price))
-            : name;
+        cont.Text = string.IsNullOrEmpty(proto.Name) ? loadoutSystem.GetName(proto) : proto.Name;
 
         cont.Select.Pressed = pressed;
 

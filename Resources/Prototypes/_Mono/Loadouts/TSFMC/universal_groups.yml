@@ -6,8 +6,6 @@
   - MonoSecurityGuardBackpack
   - MonoSecurityGuardSatchel
   - MonoSecurityGuardDuffel
-  fallbacks:
-
 - type: loadoutGroup
   id: TsfmcEngiModsuit
   name: loadout-group-contractor-backpack
@@ -17,8 +15,6 @@
   - MonoSecurityGuardBackpack
   - MonoSecurityGuardSatchel
   - MonoSecurityGuardDuffel
-  fallbacks:
-
 - type: loadoutGroup
   id: TsfmcShoes
   name: loadout-group-contractor-shoes

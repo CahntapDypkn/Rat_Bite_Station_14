@@ -1,6 +1,5 @@
 - type: roleLoadout
   id: JobCadet # Unused
-  points: 75000
   groups:
   - TsfmcBackpack
   - TsfmcShoes
@@ -11,7 +10,6 @@
 
 - type: roleLoadout
   id: JobDeputy # Marine
-  points: 75000
   groups:
   - TsfmcBackpack
   - TsfmcShoes
@@ -21,7 +19,6 @@
 
 - type: roleLoadout
   id: JobBailiff # Captain
-  points: 75000
   groups:
   - TsfmcBackpack
   - TsfmcShoes
@@ -31,7 +28,6 @@
 
 - type: roleLoadout
   id: JobSeniorOfficer # Fireteam Leader
-  points: 75000
   groups:
   - TsfmcBackpack
   - TsfmcShoes
@@ -41,7 +37,6 @@
 
 - type: roleLoadout
   id: JobSheriff # Colonel
-  points: 75000
   groups:
   - TsfmcBackpack
   - TsfmcShoes
@@ -51,7 +46,6 @@
 
 - type: roleLoadout
   id: JobTsfEngineer # Engineer
-  points: 75000
   groups:
   - TsfmcHeadEngi
   - TsfmcEngiModsuit

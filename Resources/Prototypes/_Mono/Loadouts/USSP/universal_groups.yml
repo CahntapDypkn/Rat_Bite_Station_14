@@ -36,15 +36,11 @@
   loadouts:
   - USSPClothingCoat
   - USSPClothingL10A
-  subgroups:
-
 - type: loadoutGroup
   id: USSPOuterClothing
   name: loadout-group-contractor-outerclothing
   loadouts:
   - USSPClothingL10
-  subgroups:
-
 - type: loadoutGroup
   id: USSPMedhud
   name: loadout-group-contractor-glasses

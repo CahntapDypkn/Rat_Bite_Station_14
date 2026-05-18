@@ -78,6 +78,18 @@ public sealed partial class TraitPrototype : IPrototype
     public ProtoId<TraitCategoryPrototype>? Category;
 
     /// <summary>
+    /// Monolith: Traits that cannot be selected with this trait.
+    /// </summary>
+    [DataField]
+    public HashSet<ProtoId<TraitPrototype>> MutuallyExclusiveTraits = new();
+
+    /// <summary>
+    /// Monolith: Species that cannot select this trait.
+    /// </summary>
+    [DataField]
+    public HashSet<ProtoId<SpeciesPrototype>> SpeciesBlacklist = new();
+
+    /// <summary>
     /// Goob: Ported from DeltaV - Hides traits from specific species
     /// </summary>
     [DataField]

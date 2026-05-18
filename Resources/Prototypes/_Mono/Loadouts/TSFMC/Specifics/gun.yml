@@ -5,8 +5,6 @@
   loadouts:
   - FactionDrozdLoadout
   - FactionLecterLoadout
-  fallbacks:
-
 - type: loadoutGroup
   id: TsfmcFirearm
   name: loadout-group-weapon
@@ -15,5 +13,3 @@
   - FactionLecterLoadout
   - FactionDrozdLoadout
   # - FactionBanditLoadout
-  fallbacks:
-

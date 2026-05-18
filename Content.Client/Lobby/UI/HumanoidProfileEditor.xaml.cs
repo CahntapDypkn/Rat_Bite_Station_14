@@ -163,6 +163,7 @@ using Content.Client.Message;
 using Content.Client.Players.PlayTimeTracking;
 using Content.Client.Sprite;
 using Content.Client.Stylesheets;
+using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
@@ -689,6 +690,8 @@ namespace Content.Client.Lobby.UI
         {
             TraitsList.DisposeAllChildren();
 
+            EnforceSpeciesTraitRestrictions();
+
             var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(t => Loc.GetString(t.Name)).ToList();
             TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-traits-tab"));
 
@@ -702,21 +705,51 @@ namespace Content.Client.Lobby.UI
                 return;
             }
 
+            Dictionary<string, TraitCategoryButton> categoryButtons = new();
+
+            var clearAllButton = new ConfirmButton
+            {
+                Text = Loc.GetString("humanoid-profile-editor-clear-all-traits-button"),
+                ConfirmationText = Loc.GetString("humanoid-profile-editor-clear-all-traits-confirm"),
+                MinSize = new Vector2(0, 30)
+            };
+            clearAllButton.OnPressed += _ =>
+            {
+                if (Profile == null)
+                    return;
+
+                Profile = Profile.WithoutAllTraitPreferences();
+                SetDirty();
+                RefreshTraits();
+            };
+            TraitsList.AddChild(clearAllButton);
+
+            var expandCollapseButtons = new TraitExpandCollapseButtons();
+            expandCollapseButtons.OnExpandCollapseAll += expanded =>
+            {
+                TraitCategoryButton.SetAllExpanded(expanded);
+
+                foreach (var button in categoryButtons.Values)
+                {
+                    button.SetExpanded(expanded);
+                }
+            };
+            TraitsList.AddChild(expandCollapseButtons);
+
             // Setup model
             Dictionary<string, List<string>> traitGroups = new();
             List<string> defaultTraits = new();
             traitGroups.Add(TraitCategoryPrototype.Default, defaultTraits);
 
+            var allSelectors = new Dictionary<ProtoId<TraitPrototype>, TraitPreferenceSelector>();
+
             foreach (var trait in traits)
             {
-                // Begin Goobstation: ported from DeltaV - Species trait exclusion
-                if (Profile?.Species is { } selectedSpecies && (trait.ExcludedSpecies.Contains(selectedSpecies) ||
-                    trait.IncludedSpecies.Count > 0 && !trait.IncludedSpecies.Contains(selectedSpecies)))
+                if (Profile?.Species is { } selectedSpecies && IsTraitExcludedForSpecies(trait, selectedSpecies))
                 {
                     Profile = Profile?.WithoutTraitPreference(trait.ID, _prototypeManager);
                     continue;
                 }
-                // End Goobstation: ported from DeltaV - Species trait exclusion
 
                 if (trait.Category == null)
                 {
@@ -734,19 +767,41 @@ namespace Content.Client.Lobby.UI
             // Create UI view from model
             foreach (var (categoryId, categoryTraits) in traitGroups)
             {
+                if (categoryId == TraitCategoryPrototype.Default && categoryTraits.Count == 0)
+                    continue;
+
                 TraitCategoryPrototype? category = null;
+                string categoryName;
+                int? maxTraitPoints = null;
 
                 if (categoryId != TraitCategoryPrototype.Default)
                 {
                     category = _prototypeManager.Index<TraitCategoryPrototype>(categoryId);
-                    // Label
-                    TraitsList.AddChild(new Label
-                    {
-                        Text = Loc.GetString(category.Name),
-                        Margin = new Thickness(0, 10, 0, 0),
-                        StyleClasses = { StyleBase.StyleClassLabelHeading },
-                    });
+                    categoryName = Loc.GetString(category.Name);
+                    maxTraitPoints = category.MaxTraitPoints;
                 }
+                else
+                {
+                    categoryName = Loc.GetString("humanoid-profile-editor-traits-default-category");
+                }
+
+                categoryTraits.Sort((a, b) =>
+                {
+                    var traitA = _prototypeManager.Index<TraitPrototype>(a);
+                    var traitB = _prototypeManager.Index<TraitPrototype>(b);
+
+                    var costCompare = traitA.Cost.CompareTo(traitB.Cost);
+                    if (costCompare != 0)
+                        return costCompare;
+
+                    var traitNameA = Loc.GetString(traitA.Name);
+                    var traitNameB = Loc.GetString(traitB.Name);
+                    return string.Compare(traitNameA, traitNameB, StringComparison.CurrentCulture);
+                });
+
+                var categoryButton = new TraitCategoryButton(categoryName);
+                categoryButtons[categoryId] = categoryButton;
+                TraitsList.AddChild(categoryButton);
 
                 List<TraitPreferenceSelector?> selectors = new();
                 var selectionCount = 0;
@@ -760,11 +815,86 @@ namespace Content.Client.Lobby.UI
                     if (selector.Preference)
                         selectionCount += trait.Cost;
 
+                    var tooltipParts = new List<string>();
+                    if (trait.Description is { } tdesc)
+                        tooltipParts.Add(Loc.GetString(tdesc));
+
+                    if (trait.MutuallyExclusiveTraits.Count > 0)
+                    {
+                        var names = new List<string>();
+                        foreach (var exId in trait.MutuallyExclusiveTraits)
+                        {
+                            if (_prototypeManager.TryIndex(exId, out var exProto))
+                                names.Add($"[color=#ADD8E6]{Loc.GetString(exProto.Name)}[/color]");
+                        }
+
+                        if (names.Count > 0)
+                            tooltipParts.Add($"You must not have one of these skills: {string.Join(", ", names)}");
+                    }
+
+                    var speciesBlacklist = trait.SpeciesBlacklist.Concat(trait.ExcludedSpecies).Distinct().ToList();
+                    if (speciesBlacklist.Count > 0)
+                    {
+                        var names = new List<string>();
+                        foreach (var speciesId in speciesBlacklist)
+                        {
+                            if (_prototypeManager.TryIndex(speciesId, out var speciesProto))
+                                names.Add($"[color=#087209]{Loc.GetString(speciesProto.Name)}[/color]");
+                        }
+
+                        if (names.Count > 0)
+                            tooltipParts.Add($"You must not be: {string.Join(", ", names)}");
+                    }
+
+                    if (trait.IncludedSpecies.Count > 0)
+                    {
+                        var names = new List<string>();
+                        foreach (var speciesId in trait.IncludedSpecies)
+                        {
+                            if (_prototypeManager.TryIndex(speciesId, out var speciesProto))
+                                names.Add($"[color=#087209]{Loc.GetString(speciesProto.Name)}[/color]");
+                        }
+
+                        if (names.Count > 0)
+                            tooltipParts.Add($"You must be: {string.Join(", ", names)}");
+                    }
+
+                    if (tooltipParts.Count > 0)
+                        selector.SetTooltip(string.Join("\n", tooltipParts));
+
+                    allSelectors[trait.ID] = selector;
+
                     selector.PreferenceChanged += preference =>
                     {
                         if (preference)
                         {
+                            var currentPoints = 0;
+                            if (category != null && category.MaxTraitPoints >= 0)
+                            {
+                                foreach (var existingTraitId in Profile?.TraitPreferences ?? new HashSet<ProtoId<TraitPrototype>>())
+                                {
+                                    if (!_prototypeManager.TryIndex<TraitPrototype>(existingTraitId, out var existingProto))
+                                        continue;
+
+                                    if (existingProto.Category == categoryId)
+                                        currentPoints += existingProto.Cost;
+                                }
+
+                                if (currentPoints + trait.Cost > category.MaxTraitPoints)
+                                {
+                                    selector.Preference = false;
+                                    return;
+                                }
+                            }
+
+                            var oldProfile = Profile;
                             Profile = Profile?.WithTraitPreference(trait.ID, _prototypeManager);
+
+                            if (Profile == oldProfile)
+                            {
+                                selector.Preference = false;
+                                return;
+                            }
                         }
                         else
                         {
@@ -772,7 +902,41 @@ namespace Content.Client.Lobby.UI
                         }
 
                         SetDirty();
-                        RefreshTraits(); // If too many traits are selected, they will be reset to the real value.
+                        UpdateTraitIncompatibilityVisibility(allSelectors);
+
+                        if (category is { MaxTraitPoints: >= 0 })
+                        {
+                            var currentPoints = 0;
+                            foreach (var traitId in Profile?.TraitPreferences ?? new HashSet<ProtoId<TraitPrototype>>())
+                            {
+                                if (!_prototypeManager.TryIndex<TraitPrototype>(traitId, out var proto))
+                                    continue;
+
+                                if (proto.Category == category.ID)
+                                    currentPoints += proto.Cost;
+                            }
+
+                            if (categoryButton.TraitsContainer.ChildCount >= 2)
+                            {
+                                var maxPoints = category.MaxTraitPoints.Value;
+                                float pointsLeft = Math.Max(0, maxPoints - currentPoints);
+
+                                if (categoryButton.TraitsContainer.GetChild(0) is ProgressBar progressBar)
+                                {
+                                    progressBar.Value = pointsLeft;
+                                    SetTraitProgressBarColor(progressBar, pointsLeft, maxPoints);
+                                }
+
+                                if (categoryButton.TraitsContainer.GetChild(1) is Label pointsLabel)
+                                {
+                                    pointsLabel.Text = Loc.GetString("humanoid-profile-editor-trait-count-hint",
+                                        ("current", pointsLeft),
+                                        ("max", category.MaxTraitPoints));
+                                }
+                            }
+
+                            RefreshTraitColors(categoryButton, category, currentPoints);
+                        }
                     };
                     selectors.Add(selector);
                 }
@@ -780,9 +944,24 @@ namespace Content.Client.Lobby.UI
                 // Selection counter
                 if (category is { MaxTraitPoints: >= 0 })
                 {
-                    TraitsList.AddChild(new Label
+                    var maxPoints = category.MaxTraitPoints.Value;
+                    var pointsLeft = Math.Max(0, maxPoints - selectionCount);
+                    var progressBar = new ProgressBar
                     {
-                        Text = Loc.GetString("humanoid-profile-editor-trait-count-hint", ("current", selectionCount), ("max", category.MaxTraitPoints)),
+                        MinHeight = 4,
+                        SetHeight = 4f,
+                        MinValue = 0,
+                        MaxValue = maxPoints,
+                        Value = pointsLeft,
+                        Margin = new Thickness(0, 0, 0, 2)
+                    };
+
+                    SetTraitProgressBarColor(progressBar, pointsLeft, maxPoints);
+                    categoryButton.AddTrait(progressBar);
+
+                    categoryButton.AddTrait(new Label
+                    {
+                        Text = Loc.GetString("humanoid-profile-editor-trait-count-hint", ("current", pointsLeft), ("max", category.MaxTraitPoints)),
                         FontColorOverride = Color.Gray
                     });
                 }
@@ -793,12 +972,105 @@ namespace Content.Client.Lobby.UI
                         continue;
 
                     if (category is { MaxTraitPoints: >= 0 } &&
+                        !selector.Preference &&
                         selector.Cost + selectionCount > category.MaxTraitPoints)
                     {
-                        selector.Checkbox.Label.FontColorOverride = Color.Red;
+                        selector.SetUnavailable(true);
                     }
 
-                    TraitsList.AddChild(selector);
+                    categoryButton.AddTrait(selector);
+                }
+
+                UpdateTraitIncompatibilityVisibility(allSelectors);
+            }
+        }
+
+        private void SetTraitProgressBarColor(ProgressBar progressBar, float pointsLeft, float maxPoints)
+        {
+            var percentRemaining = maxPoints == 0 ? 0 : pointsLeft / maxPoints;
+            var barColor = percentRemaining > 0.5f
+                ? Color.FromHex("#33FF33")
+                : percentRemaining > 0.25f
+                    ? Color.FromHex("#FFFF33")
+                    : Color.FromHex("#FF3333");
+
+            progressBar.ForegroundStyleBoxOverride = new StyleBoxFlat
+            {
+                BackgroundColor = barColor,
+            };
+        }
+
+        private void RefreshTraitColors(TraitCategoryButton categoryButton, TraitCategoryPrototype category, int currentPoints)
+        {
+            for (var i = 0; i < categoryButton.TraitsContainer.ChildCount; i++)
+            {
+                if (categoryButton.TraitsContainer.GetChild(i) is not TraitPreferenceSelector selector)
+                    continue;
+
+                selector.TraitButton.ModulateSelfOverride = null;
+                selector.SetUnavailable(!selector.Preference && selector.Cost + currentPoints > category.MaxTraitPoints);
+            }
+        }
+
+        private void UpdateTraitIncompatibilityVisibility(Dictionary<ProtoId<TraitPrototype>, TraitPreferenceSelector> allSelectors)
+        {
+            var selected = Profile?.TraitPreferences ?? new HashSet<ProtoId<TraitPrototype>>();
+            var currentSpecies = Profile?.Species;
+
+            foreach (var (traitId, selector) in allSelectors)
+            {
+                if (selected.Contains(traitId))
+                {
+                    selector.Visible = true;
+                    continue;
+                }
+
+                if (!_prototypeManager.TryIndex<TraitPrototype>(traitId, out var thisProto))
+                {
+                    selector.Visible = false;
+                    continue;
+                }
+
+                var hide = currentSpecies != null && IsTraitExcludedForSpecies(thisProto, currentSpecies.Value);
+
+                if (!hide)
+                {
+                    foreach (var selectedId in selected)
+                    {
+                        if (!_prototypeManager.TryIndex<TraitPrototype>(selectedId, out var selectedProto))
+                            continue;
+
+                        if (selectedProto.MutuallyExclusiveTraits.Contains(traitId) ||
+                            thisProto.MutuallyExclusiveTraits.Contains(selectedId))
+                        {
+                            hide = true;
+                            break;
+                        }
+                    }
+                }
+
+                selector.Visible = !hide;
+            }
+        }
+
+        private bool IsTraitExcludedForSpecies(TraitPrototype trait, ProtoId<SpeciesPrototype> selectedSpecies)
+        {
+            return trait.SpeciesBlacklist.Contains(selectedSpecies) ||
+                   trait.ExcludedSpecies.Contains(selectedSpecies) ||
+                   trait.IncludedSpecies.Count > 0 && !trait.IncludedSpecies.Contains(selectedSpecies);
+        }
+
+        private void EnforceSpeciesTraitRestrictions()
+        {
+            if (Profile?.Species is not { } selectedSpecies)
+                return;
+
+            foreach (var traitId in Profile.TraitPreferences.ToList())
+            {
+                if (!_prototypeManager.TryIndex<TraitPrototype>(traitId, out var trait) ||
+                    IsTraitExcludedForSpecies(trait, selectedSpecies))
+                {
+                    Profile = Profile?.WithoutTraitPreference(traitId, _prototypeManager);
                 }
             }
         }

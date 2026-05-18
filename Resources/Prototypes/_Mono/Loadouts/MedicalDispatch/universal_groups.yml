@@ -15,8 +15,6 @@
   name: loadout-group-contractor-backpack
   loadouts:
   - MdMedicClothingModsuitParamedicPowerCell
-  subgroups:
-  fallbacks:
 
 - type: loadoutGroup
   id: MdMedicPDA

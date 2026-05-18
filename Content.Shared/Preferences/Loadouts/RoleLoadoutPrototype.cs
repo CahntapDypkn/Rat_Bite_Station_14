@@ -38,8 +38,6 @@ namespace Content.Shared.Preferences.Loadouts;
 [Prototype]
 public sealed partial class RoleLoadoutPrototype : IPrototype
 {
-    public const int DefaultPoints = 75000;
-
     /*
      * Separate to JobPrototype / AntagPrototype as they are turning into messy god classes.
      */
@@ -70,5 +68,5 @@ public sealed partial class RoleLoadoutPrototype : IPrototype
     /// How many points are allotted for this role loadout prototype.
     /// </summary>
     [DataField]
-    public int? Points = DefaultPoints;
+    public int? Points;
 }

@@ -1,6 +1,5 @@
 - type: roleLoadout
   id: JobUSSPRifleman
-  points: 75000
   groups:
   - USSPHead
   - TsfmcShoes
@@ -10,7 +9,6 @@
 
 - type: roleLoadout
   id: JobUSSPCorporal
-  points: 75000
   groups:
   - USSPHead
   - USSPOuterClothing
@@ -22,7 +20,6 @@
 
 - type: roleLoadout
   id: JobUSSPMedic
-  points: 75000
   groups:
   - USSPHead
   - TsfmcBrigmedicGloves
@@ -35,7 +32,6 @@
 
 - type: roleLoadout
   id: JobUSSPSergeant
-  points: 75000
   groups:
   - TsfmcShoes
   - TsfmcFace
@@ -45,7 +41,6 @@
 
 - type: roleLoadout
   id: JobUSSPCommissar
-  points: 75000
   groups:
   - USSPOuterClothingOfficer
   - TsfmcShoes
