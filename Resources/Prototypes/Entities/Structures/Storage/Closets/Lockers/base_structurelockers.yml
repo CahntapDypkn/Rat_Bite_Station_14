@@ -109,5 +109,14 @@
   abstract: true
   components:
     - type: Destructible
-      thresholds: []
+      thresholds:
+        - trigger:
+            !type:DamageTrigger
+            damage: 2000
+          behaviors:
+            - !type:DoActsBehavior
+              acts: ["Destruction"]
+            - !type:RadioBehavior
+              radioMessage: "locker-mindshield-destroy"
+              radioChannel: "Security"
   

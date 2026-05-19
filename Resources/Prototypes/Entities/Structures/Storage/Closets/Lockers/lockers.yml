@@ -398,7 +398,7 @@
 # Brigmedic
 - type: entity
   id: LockerBrigmedic
-  parent: LockerMindshielded
+  parent: LockerBaseSecure
   name: brigmedic locker
   components:
   - type: Appearance
@@ -408,12 +408,11 @@
     stateDoorClosed: brigmedic_door
   - type: AccessReader
     access: [["Security"]] # goob edit
-    needsMindshield: true
 
 # Security Officer
 - type: entity
   id: LockerSecurity
-  parent: LockerMindshielded
+  parent: LockerBaseSecure
   name: security officer's locker
   components:
   - type: Appearance
@@ -423,7 +422,6 @@
     stateDoorClosed: sec_door
   - type: AccessReader
     access: [["Security"]]
-    needsMindshield: true
 
 - type: entity
   id: GunSafe
@@ -571,7 +569,6 @@
   components:
   - type: AccessReader
     access: [["Detective"]]
-    needsMindshield: true
 
 - type: entity
   id: LockerEvidence
