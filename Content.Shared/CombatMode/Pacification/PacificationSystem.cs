@@ -65,12 +65,12 @@ using Content.Shared.Actions;
 using Content.Shared.Alert;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.IdentityManagement;
-using Content.Shared.Inventory;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Content.Shared.Throwing;
 using Content.Shared.Weapons.Ranged.Events;
+using Robust.Shared.Network;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.CombatMode.Pacification;
@@ -81,9 +81,9 @@ public sealed class PacificationSystem : EntitySystem
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
     [Dependency] private readonly SharedCombatModeSystem _combatSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly UnarmedCombatSkillSystem _unarmedCombat = default!;
+    [Dependency] private readonly PaciFistSystem _paciFist = default!;
 
     public override void Initialize()
     {
@@ -161,10 +161,10 @@ public sealed class PacificationSystem : EntitySystem
         if (args.Weapon != null && args.Weapon.Value.Comp.Damage.GetTotal() == FixedPoint2.Zero)
             return;
 
-        if (HasComp<PaciFistComponent>(uid) &&
-            IsBarehandWeapon(uid, args.Weapon?.Owner) &&
-            HasComp<MobStateComponent>(args.Target) &&
-            !_unarmedCombat.IsUnarmedCombatSkillBlocked(uid))
+        if (_paciFist.IsBarehandWeapon(uid, args.Weapon?.Owner) &&
+            _paciFist.IsMobTarget(args.Target.Value) &&
+            (_net.IsClient && HasComp<PaciFistComponent>(uid) ||
+             _net.IsServer && _paciFist.CanPaciFistAttackMob(uid, args.Weapon?.Owner, args.Target.Value, out _)))
             return;
 
         if (PacifiedCanAttack(uid, args.Target.Value, out var reason))
@@ -172,18 +172,6 @@ public sealed class PacificationSystem : EntitySystem
 
         ShowPopup((uid, component), args.Target.Value, reason);
         args.Cancel();
-    }
-
-    private bool IsBarehandWeapon(EntityUid user, EntityUid? weapon)
-    {
-        if (weapon == null)
-            return false;
-
-        if (weapon.Value == user)
-            return true;
-
-        return _inventory.TryGetSlotEntity(user, "gloves", out var gloves) &&
-               gloves == weapon.Value;
     }
 
     private void OnStartup(EntityUid uid, PacifiedComponent component, ComponentStartup args)

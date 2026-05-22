@@ -21,10 +21,6 @@
   description: trait-description-ParkourTraining
   category: Physical
   cost: 5
-  mutuallyExclusiveTraits:
-  - Sluggish
-  - SnailPaced
-  - BadKnees
   components:
   - type: ClimbDelayModifier
     climbDelayMultiplier: 0.5

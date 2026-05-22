@@ -89,6 +89,11 @@ public sealed class MeleeHitEvent : HandledEntityEventArgs
     public bool PlayMissFeedback;
 
     /// <summary>
+    ///     Plays normal hit feedback for a handled hit that intentionally suppresses damage.
+    /// </summary>
+    public bool PlayHitFeedback;
+
+    /// <summary>
     /// Goobstation
     /// The coordinates of an attack.
     /// </summary>

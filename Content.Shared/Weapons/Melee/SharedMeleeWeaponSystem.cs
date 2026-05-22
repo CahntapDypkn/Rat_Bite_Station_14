@@ -204,8 +204,8 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
     [Dependency] private   readonly INetConfigurationManager _config = default!;
     [Dependency] private   readonly SharedStaminaSystem _stamina = default!;
     [Dependency] private   readonly TagSystem _tag = default!;
-    [Dependency] private   readonly UnarmedCombatSkillSystem _unarmedCombat = default!;
     [Dependency] private   readonly SharedColorFlashEffectSystem _color = default!;
+    [Dependency] private   readonly PaciFistSystem _paciFist = default!;
 
     //Goob - Shove
     private float _shoveRange;
@@ -741,6 +741,14 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
         if (hitEvent.Handled)
         {
+            if (hitEvent.PlayHitFeedback)
+            {
+                DoLungeAnimation(user, weapon, component.Angle, TransformSystem.ToMapCoordinates(target.Value.ToCoordinates()), rangeEv.Range, component.Animation, component.AnimationRotation, component.FlipAnimation);
+                Interaction.DoContactInteraction(user, weapon);
+                Interaction.DoContactInteraction(user, target);
+                _meleeSound.PlayHitSound(target.Value, user, null, hitEvent.HitSoundOverride, component);
+            }
+
             if (hitEvent.PlayMissFeedback)
             {
                 _meleeSound.PlaySwingSound(user, meleeUid, component);
@@ -1283,25 +1291,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
     private bool TryGetBarehandPaciFist(EntityUid user, EntityUid meleeUid, [NotNullWhen(true)] out PaciFistComponent? paciFist)
     {
-        paciFist = null;
-
-        if (!IsBarehandWeapon(user, meleeUid) ||
-            _unarmedCombat.IsUnarmedCombatSkillBlocked(user) ||
-            !TryComp(user, out paciFist))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private bool IsBarehandWeapon(EntityUid user, EntityUid meleeUid)
-    {
-        if (meleeUid == user)
-            return true;
-
-        return _inventory.TryGetSlotEntity(user, "gloves", out var gloves) &&
-               gloves == meleeUid;
+        return _paciFist.TryGetActivePaciFist(user, meleeUid, out paciFist);
     }
 
     private void TryApplyPaciFistHit(EntityUid user, EntityUid meleeUid, MeleeHitEvent hitEvent)
@@ -1314,21 +1304,21 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         var handled = false;
         foreach (var target in hitEvent.HitEntities)
         {
-            if (!HasComp<MobStateComponent>(target))
+            if (!_paciFist.TryGetMobTarget(target, out var mobTarget))
                 continue;
 
-            if (TryComp<StaminaComponent>(target, out var stamina))
-                _stamina.TakeStaminaDamage(target, paciFist.StaminaDamage, stamina, source: user, visual: true, applyResistances: true);
+            if (TryComp<StaminaComponent>(mobTarget, out var stamina))
+                _stamina.TakeStaminaDamage(mobTarget, paciFist.StaminaDamage, stamina, source: user, visual: false, applyResistances: true);
 
-            _color.RaiseEffect(Color.Aqua, new List<EntityUid> { target }, Filter.Pvs(target, entityManager: EntityManager));
-            PhysicalPull(user, target, paciFist);
+            _color.RaiseEffect(Color.Aqua, new List<EntityUid> { mobTarget }, Filter.Pvs(mobTarget, entityManager: EntityManager));
+            PhysicalPull(user, mobTarget, paciFist);
             handled = true;
         }
 
         if (!handled)
             return;
 
-        hitEvent.PlayMissFeedback = true;
+        hitEvent.PlayHitFeedback = true;
         hitEvent.Handled = true;
     }
 
