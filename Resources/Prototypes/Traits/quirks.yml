@@ -11,7 +11,7 @@
   name: trait-pacifist-name
   description: trait-pacifist-desc
   category: Mental
-  cost: -2
+  cost: -6
   components:
   - type: Pacified
 
@@ -39,7 +39,7 @@
   name: trait-tracking-by-scent-name
   description: trait-tracking-by-scent-desc
   category: Physical
-  cost: 2
+  cost: 3
   speciesBlacklist:
   - Vulpkanin
   components:
@@ -50,6 +50,6 @@
   name: trait-all-ears-name
   description: trait-all-ears-desc
   category: Physical
-  cost: 3
+  cost: 4
   components:
   - type: EnhancedHearing

@@ -36,7 +36,7 @@
   description: trait-blindness-desc
   traitGear: WhiteCane
   category: Physical
-  cost: -3
+  cost: -6
   whitelist:
     components:
       - Blindable
@@ -62,7 +62,7 @@
   name: trait-narcolepsy-name
   description: trait-narcolepsy-desc
   category: Mental
-  cost: -1
+  cost: -4
   components:
     - type: Narcolepsy
       timeBetweenIncidents: 300, 600
@@ -92,7 +92,7 @@
   name: trait-muted-name
   description: trait-muted-desc
   category: Mental
-  cost: -1
+  cost: -3
   blacklist:
     components:
       - BorgChassis
@@ -127,7 +127,7 @@
   name: trait-clumsiness-name
   description: trait-clumsiness-desc
   category: Physical
-  cost: -2
+  cost: -5
   components:
   - type: Clumsy
     gunShootFailDamage:
@@ -145,7 +145,7 @@
   name: trait-kleptomania-name
   description: trait-kleptomania-desc
   category: Mental
-  cost: -3
+  cost: -4
   mutuallyExclusiveTraits:
   - ChronicKleptomania
   components:
@@ -157,7 +157,7 @@
   name: trait-chronic-kleptomania-name
   description: trait-chronic-kleptomania-desc
   category: Mental
-  cost: -6
+  cost: -8
   mutuallyExclusiveTraits:
   - Kleptomania
   components:

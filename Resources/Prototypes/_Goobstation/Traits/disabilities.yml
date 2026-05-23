@@ -14,7 +14,7 @@
   name: trait-wheelchair-bound-name
   description: trait-wheelchair-bound-desc
   category: Physical
-  cost: -3
+  cost: -6
   blacklist:
     components:
       - BorgChassis
@@ -39,7 +39,7 @@
   description: trait-movement-impaired-desc
   traitGear: Cane
   category: Physical
-  cost: -1
+  cost: -5
   blacklist:
     components:
     - BorgChassis
@@ -61,7 +61,7 @@
   name: trait-deaf-name
   description: trait-deaf-disc
   category: Physical
-  cost: -2
+  cost: -4
   blacklist:
     components:
     - BorgChassis
