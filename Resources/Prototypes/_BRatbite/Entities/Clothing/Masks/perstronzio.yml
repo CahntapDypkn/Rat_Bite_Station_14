@@ -5,6 +5,7 @@
 - type: entity
   parent: ClothingMaskClownUnremoveable
   id: ClothingMaskPerstronzio
+  name: Lord Perstronzio's Regal Mask
   suffix: Perstronzio, Unremoveable
   components:
   - type: Unremoveable
