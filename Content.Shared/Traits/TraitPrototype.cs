@@ -74,6 +74,12 @@ public sealed partial class TraitPrototype : IPrototype
     public int Cost = 0;
 
     /// <summary>
+    /// Whether this trait should be hidden from the character editor trait list.
+    /// </summary>
+    [DataField]
+    public bool Hidden = false;
+
+    /// <summary>
     /// Adds a trait to a category, allowing you to limit the selection of some traits to the settings of that category.
     /// </summary>
     [DataField]

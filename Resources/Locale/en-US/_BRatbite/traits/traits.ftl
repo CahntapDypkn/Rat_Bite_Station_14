@@ -30,3 +30,7 @@ trait-juggernaut-desc =
 trait-neurogenesis-imperfecta-name = Neurogenesis Imperfecta
 trait-neurogenesis-imperfecta-desc =
     Your brain is incompatible with neural connectors, MMIs, cloning, and foreign bodies.
+
+trait-lord-perstronzios-rage-name = Lord Perstronzio's Rage
+trait-lord-perstronzios-rage-desc =
+    You've achieved the highest levels of Mald-estending. Nothing can stop you.

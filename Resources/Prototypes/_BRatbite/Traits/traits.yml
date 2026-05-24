@@ -97,3 +97,12 @@
   - type: Uncloneable
   - type: Unrevivable
     cloneable: false
+
+- type: trait
+  id: LordPerstronziosRage
+  name: trait-lord-perstronzios-rage-name
+  description: trait-lord-perstronzios-rage-desc
+  category: Mental
+  cost: 0
+  components:
+  - type: LordPerstronziosRage

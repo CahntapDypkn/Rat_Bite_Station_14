@@ -694,7 +694,10 @@ namespace Content.Client.Lobby.UI
 
             EnforceSpeciesTraitRestrictions();
 
-            var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(t => Loc.GetString(t.Name)).ToList();
+            var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>()
+                .Where(t => !t.Hidden)
+                .OrderBy(t => Loc.GetString(t.Name))
+                .ToList();
             TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-traits-tab"));
 
             if (traits.Count < 1)
