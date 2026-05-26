@@ -310,6 +310,8 @@
   description: trait-dermal-armor-desc
   category: Physical
   cost: 6
+  speciesBlacklist:
+  - Gingerbread
   components:
   - type: DamageProtectionBuff
     modifiers:
@@ -418,6 +420,7 @@
   - Felinid
   - Tajaran
   - Scurret
+  - Gingerbread
   blacklist:
     components:
     - BorgChassis
