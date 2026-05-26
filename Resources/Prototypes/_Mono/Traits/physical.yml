@@ -7,7 +7,7 @@
   name: trait-prybar-prosthetics-name
   description: trait-prybar-prosthetics-desc
   category: Physical
-  cost: 2
+  cost: 14 # Ratbite, replaces need for insuls.
   components:
   - type: PrybarProsthetics
     prySpeedModifier: 1
@@ -120,16 +120,16 @@
     identifyHidden: true
     traitGranted: true
 
-- type: trait
-  id: BionicLegs
-  name: trait-bionic-legs-name
-  description: trait-bionic-legs-desc
-  category: Physical
-  cost: 8
-  components:
-  - type: BionicLegs
-    walkSpeed: 2.1875
-    sprintSpeed: 3.6225
+#- type: trait # Ratbite, removed this because its dumb strong.
+#  id: BionicLegs
+#  name: trait-bionic-legs-name
+#  description: trait-bionic-legs-desc
+#  category: Physical
+#  cost: 14
+#  components:
+#  - type: BionicLegs
+#      walkSpeed: 2.1875 # add your slower values
+#    sprintSpeed: 3.6225 # add your slower values
 
 - type: trait
   id: OsteogenesisImperfecta
@@ -257,7 +257,7 @@
   name: trait-redshirt-name
   description: trait-redshirt-desc
   category: Mental
-  cost: -8
+  cost: -3 # Ratbite nerf, encourages antisocial gameplay at -8, crazy.
   mutuallyExclusiveTraits:
   - WillToLive
   speciesBlacklist:
