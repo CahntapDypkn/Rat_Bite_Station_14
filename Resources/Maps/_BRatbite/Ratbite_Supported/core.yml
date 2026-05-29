@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 05/29/2026 05:33:01
-  entityCount: 22571
+  time: 05/29/2026 06:17:38
+  entityCount: 22572
 maps:
 - 1
 grids:
@@ -20666,11 +20666,6 @@ entities:
     components:
     - type: Transform
       pos: -4.5,-21.5
-      parent: 2
-  - uid: 1125
-    components:
-    - type: Transform
-      pos: 28.5,17.5
       parent: 2
   - uid: 1126
     components:
@@ -50188,6 +50183,20 @@ entities:
     - type: Transform
       pos: 74.5,-11.5
       parent: 2
+- proto: CargoTechFab
+  entities:
+  - uid: 1125
+    components:
+    - type: Transform
+      pos: 28.5,17.5
+      parent: 2
+    - type: TechnologyDatabase
+      supportedDisciplines:
+      - Industrial
+      - Arsenal
+      - Experimental
+      - CivilianServices
+      - LEGAL
 - proto: Carpet
   entities:
   - uid: 6863
@@ -70894,6 +70903,20 @@ entities:
     - type: Transform
       pos: 45.5,11.5
       parent: 2
+- proto: EngineeringTechFab
+  entities:
+  - uid: 22014
+    components:
+    - type: Transform
+      pos: -3.5,-21.5
+      parent: 2
+    - type: TechnologyDatabase
+      supportedDisciplines:
+      - Industrial
+      - Arsenal
+      - Experimental
+      - CivilianServices
+      - LEGAL
 - proto: ExosuitFabricator
   entities:
   - uid: 10396
@@ -107335,11 +107358,6 @@ entities:
     - type: Transform
       pos: 21.5,-20.5
       parent: 2
-  - uid: 15456
-    components:
-    - type: Transform
-      pos: -13.5,-4.5
-      parent: 2
   - uid: 15457
     components:
     - type: Transform
@@ -117185,6 +117203,20 @@ entities:
     - type: Transform
       pos: -31.5,17.5
       parent: 2
+- proto: ServiceTechFab
+  entities:
+  - uid: 15456
+    components:
+    - type: Transform
+      pos: -13.5,-4.5
+      parent: 2
+    - type: TechnologyDatabase
+      supportedDisciplines:
+      - Industrial
+      - Arsenal
+      - Experimental
+      - CivilianServices
+      - LEGAL
 - proto: ShardGlass
   entities:
   - uid: 17048
@@ -147994,10 +148026,12 @@ entities:
     - type: Transform
       pos: 69.5,6.5
       parent: 2
-  - uid: 22014
+- proto: WeldingFuelTankHighCapacity
+  entities:
+  - uid: 22572
     components:
     - type: Transform
-      pos: -3.5,-21.5
+      pos: 2.5,-20.5
       parent: 2
 - proto: Windoor
   entities:
