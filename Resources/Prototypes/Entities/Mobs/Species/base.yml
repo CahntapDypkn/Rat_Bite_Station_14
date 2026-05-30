@@ -596,7 +596,7 @@
   - type: CombatUntrained
     recoilDebuff: 2
     flatRecoilDebuff: 5.0
-    missShotChange: 0.05
+    missShotChance: 0.05
     dropGunChance: 0.01
 
 - type: entity
