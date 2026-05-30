@@ -125,9 +125,9 @@
       amount: 6
     Vomit:
       amount: 39
-    Plasma:
+    Vestine:
       amount: 1
-  products: # pretty uh, crazy
+  products: # should work, might not, didn't test it, comma, comma, comma, comma
     Romerol: 1
 
 
