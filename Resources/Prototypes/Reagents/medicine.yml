@@ -1372,7 +1372,7 @@
         damage:
           types:
             Piercing: -5 #Ratbite - changed from -4...
-            Blunt: 0.15
+            Blunt: 0.15 # Ratbite - ...but it also deals more blunt (old: 0.10)
       - !type:HealthChange
         conditions:
         - !type:OrganType # Goobstation - Yowie
