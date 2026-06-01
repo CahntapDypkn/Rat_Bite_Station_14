@@ -137,6 +137,9 @@
       jobBlacklist: [ Chaplain ] # GOOBSTATION
       mindRoles:
       - MindRoleHeretic
+      components: # Ratbite - Why the fuck didn't midround heretics have WeakToHoly and CanEnchant?
+      - type: WeakToHoly
+      - type: CanEnchant
   - type: Tag
     tags:
       - MidroundAntag
