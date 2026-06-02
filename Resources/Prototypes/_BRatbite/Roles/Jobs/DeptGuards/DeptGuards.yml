@@ -173,7 +173,7 @@
     mask: ClothingMaskGasSecurity
     neck: SurveillanceWirelessCameraBodySecurity
     jumpsuit: ClothingUniformJumpsuitSciGuard
-    gloves: ClothingHandsGlovesPurple
+    gloves: ClothingHandsGlovesColorPurple
 #endregion
 
 #region Engi Sentry
