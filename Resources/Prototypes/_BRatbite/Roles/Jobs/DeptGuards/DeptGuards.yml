@@ -1,3 +1,5 @@
+
+#region Medical Orderly
 - type: job
   id: MedOrderly
   name: Medical Orderly
@@ -43,6 +45,20 @@
     back:
     - Flash
 
+- type: chameleonOutfit
+  id: MedOrderlyChameleonOutfit
+  job: MedOrderly
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetBasic
+    mask: ClothingMaskGasSecurity
+    neck: SurveillanceWirelessCameraBodySecurity
+    jumpsuit: ClothingUniformJumpsuitMedGuard
+    gloves: ClothingHandsGlovesNitrile
+
+#endregion
+
+#region Cargo Insurance
 - type: job
   id: CargoInsurance
   name: Cargo Insurance
@@ -89,6 +105,20 @@
     back:
     - Flash
 
+
+- type: chameleonOutfit
+  id: CargoInsuranceChameleonOutfit
+  job: CargoInsurance
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetBasic
+    mask: ClothingMaskGasSecurity
+    neck: SurveillanceWirelessCameraBodySecurity
+    jumpsuit: ClothingUniformJumpsuitCargoGuard
+    gloves: ClothingHandsGlovesFingerless
+#endregion
+
+#region SciGuard
 - type: job
   id: ScicurityGuard
   name: Sci-Curity Guard
@@ -133,6 +163,20 @@
     back:
     - Flash
 
+
+- type: chameleonOutfit
+  id: SciGuardChameleonOutfit
+  job: ScicurityGuard
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetBasic
+    mask: ClothingMaskGasSecurity
+    neck: SurveillanceWirelessCameraBodySecurity
+    jumpsuit: ClothingUniformJumpsuitSciGuard
+    gloves: ClothingHandsGlovesPurple
+#endregion
+
+#region Engi Sentry
 - type: job
   id: EngiSentry
   name: Engi Sentry
@@ -184,3 +228,14 @@
     back:
     - Flash
 
+- type: chameleonOutfit
+  id: EngiSentryChameleonOutfit
+  job: EngiSentry
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetBasic
+    mask: ClothingMaskGasSecurity
+    neck: SurveillanceWirelessCameraBodySecurity
+    jumpsuit: ClothingUniformJumpsuitEngiGuard
+    gloves: ClothingHandsGlovesFingerless
+#endregion
