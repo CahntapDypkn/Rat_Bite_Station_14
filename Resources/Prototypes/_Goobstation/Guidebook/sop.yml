@@ -72,7 +72,6 @@
   text: "/ServerInfo/_Goobstation/Guidebook/SoP/Legal/LegalSOP.xml"
   priority: 2
   children:
-  - SpaceLaw
   - Execution SOP
   - PermaBrig SOP
   - Punishments SOP
