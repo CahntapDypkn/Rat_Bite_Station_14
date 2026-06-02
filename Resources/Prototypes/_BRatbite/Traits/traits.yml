@@ -150,3 +150,25 @@
   cost: 0
   components:
   - type: Atheist
+
+- type: trait
+  id: CombatTrained
+  name: trait-combat-trained-name
+  description: trait-combat-trained-desc
+  category: Mental
+  cost: 2
+  speciesBlacklist:
+  - Oni
+  components:
+  - type: CombatTrained
+
+- type: trait
+  id: ScaredOfGuns
+  name: trait-scared-of-guns-name
+  description: trait-scared-of-guns-desc
+  category: Mental
+  cost: -3
+  speciesBlacklist:
+  - Oni
+  components:
+    - type: ScaredOfGuns
