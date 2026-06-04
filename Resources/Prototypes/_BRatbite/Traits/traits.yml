@@ -164,6 +164,7 @@
   components:
   - type: Believer
 
+- type: trait
   id: CombatTrained
   name: trait-combat-trained-name
   description: trait-combat-trained-desc
