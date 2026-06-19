@@ -37,6 +37,8 @@ public sealed partial class StowawaySystem : EntitySystem
 
     private void OnPlayerSpawn(PlayerSpawningEvent args)
     {
+        // Skip station AIs
+        if (args.Job == "StationAi") return;
         if (!args.HumanoidCharacterProfile?.TraitPreferences?.Contains("Stowaway") ?? false)
             return;
         if (args.SpawnResult != null)
