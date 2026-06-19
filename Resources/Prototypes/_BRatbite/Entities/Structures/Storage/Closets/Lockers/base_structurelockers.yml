@@ -14,4 +14,5 @@
             - !type:RadioBehavior
               radioMessage: "locker-mindshield-destroy"
               radioChannel: "Security"
-  
+    - type: StowawaySpawnPoint
+      secure: true

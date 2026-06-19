@@ -85,6 +85,7 @@
   - type: RecyclableOnUnlock
   - type: Paintable
     group: Locker
+  - type: StowawaySpawnPoint # Ratbite
 
 - type: entity
   id: LockerBaseSecure
