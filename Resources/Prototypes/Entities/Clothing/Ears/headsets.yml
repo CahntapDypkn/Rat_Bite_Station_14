@@ -163,11 +163,16 @@
     sprite: Clothing/Ears/Headsets/cargo.rsi
 
 - type: entity
-  parent: ClothingHeadsetCargo
+  parent: ClothingHeadsetAlt # Ratbite - It's almost like these things are designed to protect-
   id: ClothingHeadsetMining
   name: mining headset
   description: Headset used by shaft miners.
   components:
+  - type: ContainerFill # Ratbite Start - -your hearing from blast charges.
+    containers:
+      key_slots:
+      - EncryptionKeyCargo
+      - EncryptionKeyCommon # Ratbite End
   - type: Sprite
     sprite: Clothing/Ears/Headsets/mining.rsi
   - type: Clothing
