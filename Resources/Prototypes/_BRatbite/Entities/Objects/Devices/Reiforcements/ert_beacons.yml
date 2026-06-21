@@ -22,6 +22,7 @@
     - type: AutoImplant
       implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ] # bluespace implant because unrobust ERT keep giving antags/selfantags free loot
     - type: MindShield
+    - type: CombatTrained
 
 # ERT leader
       
@@ -39,12 +40,11 @@
     job: ERTLeader
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTLeaderGear ]
       roleLoadout: [ RoleSurvivalExtended ]
     - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
+      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant, DeathRattleImplantCentcomm ]
 
 
 - type: entity
@@ -54,12 +54,9 @@
   components:
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTLeaderGearEVA ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 # ERT Chaplain
 
@@ -77,13 +74,10 @@
     job: ERTChaplain
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: BibleUser
     - type: Loadout
       prototypes: [ ERTChaplainGear ]
       roleLoadout: [ RoleSurvivalExtended ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 
 - type: entity
@@ -93,12 +87,9 @@
   components:
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTChaplainGearEVA ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 # ERT Janitor
 
@@ -116,13 +107,9 @@
     job: ERTJanitor
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTJanitorGear ]
       roleLoadout: [ RoleSurvivalExtended ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
-
 
 - type: entity
   parent: ERTJanitorReinforcement
@@ -131,12 +118,9 @@
   components:
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTJanitorGearEVA ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 # ERT Engineer
 
@@ -153,13 +137,9 @@
       settings: short
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTEngineerGear ]
       roleLoadout: [ RoleSurvivalExtended ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
-
 
 - type: entity
   parent: ERTEngineerReinforcement
@@ -172,8 +152,6 @@
     - type: Loadout
       prototypes: [ ERTEngineerGearEVA ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 # ERT security
 
@@ -191,12 +169,9 @@
     job: ERTSecurity
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTSecurityGear ]
       roleLoadout: [ RoleSurvivalExtended ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 
 - type: entity
@@ -206,12 +181,9 @@
   components:
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTSecurityGearEVA ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 
 # ERT medic
@@ -240,9 +212,6 @@
     - type: Loadout
       prototypes: [ ERTMedicalGear ]
       roleLoadout: [ RoleSurvivalExtended ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
-
 
 - type: entity
   parent: ERTMedicReinforcement
@@ -251,12 +220,9 @@
   components:
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ ERTMedicalGearEVA ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
 
 # CBurn
 - type: entity
@@ -279,9 +245,7 @@
       time: 18000 # five hours
   - type: GhostCharacterSpawner
     components:
-    - type: CombatTrained
     - type: Loadout
       prototypes: [ CBURNGear ]
       roleLoadout: [ RoleSurvivalEVA ]
-    - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, BluespaceLifelineImplant ]
+
