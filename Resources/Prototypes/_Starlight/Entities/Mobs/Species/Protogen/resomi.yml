@@ -14,13 +14,10 @@
     - Machine
     - Scratch
   - type: Absorbable
-  - type: Jump
-    action: JumpResomi
   - type: DamageVisuals
     thresholds: [ 10, 30, 50, 70]
     targetLayers:
     - "enum.HumanoidVisualLayers.Chest"
-    - "enum.HumanoidVisualLayers.Groin"
     - "enum.HumanoidVisualLayers.Head"
     - "enum.HumanoidVisualLayers.LArm"
     - "enum.HumanoidVisualLayers.LLeg"
@@ -32,17 +29,17 @@
     - "enum.HumanoidVisualLayers.LFoot"
     damageOverlayGroups:
       Brute:
-        sprite: _Starlight/Mobs/Effects/Resomi/brute_damage.rsi
+        sprite: _Floofstation/Mobs/Effects/Resomi/brute_damage.rsi
         color: "#C048C2"
       Burn:
-        sprite: _Starlight/Mobs/Effects/Resomi/burn_damage.rsi
+        sprite: _Floofstation/Mobs/Effects/Resomi/burn_damage.rsi
   - type: Bloodstream
     bloodReferenceSolution:
       reagents:
       - ReagentId: ResomiBlood
         Quantity: 300
   - type: FireVisuals
-    sprite: _Starlight/Mobs/Effects/onfire.rsi
+    sprite: _Floofstation/Mobs/Effects/onfire.rsi
     normalState: Resomi_minor_burning
     alternateState: Resomi_burning
   - type: Damageable

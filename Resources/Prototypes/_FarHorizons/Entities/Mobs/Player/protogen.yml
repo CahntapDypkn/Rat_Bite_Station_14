@@ -48,12 +48,6 @@
 
 - type: entity
   save: false
-  name: Urist McFelinster
-  parent: BaseMobProtoFelionoid
-  id: MobProtoFelionoid
-
-- type: entity
-  save: false
   name: Urist McUrister
   parent: BaseMobProtoDwarf
   id: MobProtoDwarf

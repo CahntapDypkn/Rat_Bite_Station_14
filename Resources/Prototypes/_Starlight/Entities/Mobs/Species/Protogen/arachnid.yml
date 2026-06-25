@@ -77,12 +77,24 @@
   # Visual & Audio
   - type: DamageVisuals
     thresholds: [ 10, 20, 30, 50, 70, 100 ]
+    targetLayers:
+    - "enum.HumanoidVisualLayers.Chest"
+    - "enum.HumanoidVisualLayers.Groin"
+    - "enum.HumanoidVisualLayers.Head"
+    - "enum.HumanoidVisualLayers.LArm"
+    - "enum.HumanoidVisualLayers.LLeg"
+    - "enum.HumanoidVisualLayers.RArm"
+    - "enum.HumanoidVisualLayers.RLeg"
+    - "enum.HumanoidVisualLayers.RHand"
+    - "enum.HumanoidVisualLayers.LHand"
+    - "enum.HumanoidVisualLayers.RFoot"
+    - "enum.HumanoidVisualLayers.LFoot"
     damageOverlayGroups:
       Brute:
-        sprite: Mobs/Effects/brute_damage.rsi
+        sprite: _Shitmed/Mobs/Effects/brute_damage.rsi
         color: "#162581"
       Burn:
-        sprite: Mobs/Effects/burn_damage.rsi
+        sprite: _Shitmed/Mobs/Effects/burn_damage.rsi
   - type: Sprite
     layers:
       - map: [ "enum.HumanoidVisualLayers.Chest" ]

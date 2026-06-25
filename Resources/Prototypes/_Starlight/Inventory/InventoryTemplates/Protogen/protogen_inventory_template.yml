@@ -47,7 +47,7 @@
     strippingWindowPos: 0,1
     displayName: Neck
   - name: misc
-    slotTexture: misc
+    slotTexture: pocket
     slotFlags: MISC
     uiWindowPos: 2,0
     strippingWindowPos: 2,1

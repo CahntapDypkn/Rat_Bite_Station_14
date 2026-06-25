@@ -13,12 +13,6 @@
   id: ProtoHuman # Starlight, Humie -> Human
 
 - type: Tag
-  id: ProtoFelionoid
-
-- type: Tag
-  id: Felionoid
-
-- type: Tag
   id: ProtoMoth
 
 - type: Tag

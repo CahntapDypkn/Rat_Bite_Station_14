@@ -25,11 +25,6 @@
   text: "/ServerInfo/_Starlight/Guidebook/Mobs/SubMobs/ProtoDwarf.xml"
 
 - type: guideEntry
-  id: ProtoFelionoid
-  name: subspecies-name-protofelionoid
-  text: "/ServerInfo/_Starlight/Guidebook/Mobs/SubMobs/ProtoFelionoid.xml"
-
-- type: guideEntry
   id: ProtoHuman
   name: subspecies-name-protohuman
   text: "/ServerInfo/_Starlight/Guidebook/Mobs/SubMobs/ProtoHuman.xml"

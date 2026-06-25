@@ -445,53 +445,6 @@
 
 # Human didn't need anything special, but, dividers here regardless. #
 
-#region FELINID ####
-
-- type: marking
-  id: ProtoFelionoidMediumArmor
-  bodyPart: Undershirt
-  markingCategory: Undershirt
-  speciesRestriction: [ProtoFelionoid]
-  sprites:
-  - sprite: _FarHorizons/Mobs/Customization/proto-feline/body_armor.rsi
-    state: medium
-
-- type: marking
-  id: ProtoFelionoidVisor
-  bodyPart: RFoot
-  markingCategory: Special
-  speciesRestriction: [ProtoFelionoid]
-  sprites:
-  - sprite: _FarHorizons/Mobs/Customization/proto-feline/visor_shapes.rsi
-    state: visor
-
-- type: marking
-  id: ProtoFelionoidLEDFace
-  bodyPart: RHand
-  markingCategory: Special
-  speciesRestriction: [ProtoFelionoid]
-  sprites:
-  - sprite: _FarHorizons/Mobs/Customization/proto-feline/led_shapes_face.rsi
-    state: face
-
-- type: marking
-  id: ProtoFelionoidLights
-  bodyPart: Undershirt
-  markingCategory: Special
-  speciesRestriction: [ProtoFelionoid]
-  sprites:
-  - sprite: _FarHorizons/Mobs/Customization/proto-feline/led_shapes_body.rsi
-    state: body
-
-- type: marking
-  id: ProtoFelionoidClaws
-  bodyPart: RHand
-  markingCategory: Overlay
-  speciesRestriction: [ProtoFelionoid]
-  sprites:
-  - sprite: _FarHorizons/Mobs/Customization/proto-feline/led_shapes_body.rsi
-    state: claws
-
 - type: marking
   id: ProtoDionaMediumArmor # Starlight, Dionae -> Diona
   bodyPart: Undershirt # Starlight, render below clothes

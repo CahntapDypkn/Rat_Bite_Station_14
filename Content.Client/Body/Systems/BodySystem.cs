@@ -52,8 +52,9 @@ public sealed class BodySystem : SharedBodySystem
 
             // Okay so if the marking prototype is modified but we load old marking data this may no longer be valid
             // and we need to check the index is correct. So if that happens just default to white?
-            if (colors != null && j < colors.Count)
-                sprite.LayerSetColor(layerId, colors[j]);
+            var colorIndex = markingPrototype.GetColorIndex(j);
+            if (colors != null && colorIndex >= 0 && colorIndex < colors.Count)
+                sprite.LayerSetColor(layerId, colors[colorIndex]);
             else
                 sprite.LayerSetColor(layerId, Color.White);
         }

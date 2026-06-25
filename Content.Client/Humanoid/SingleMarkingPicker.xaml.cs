@@ -228,9 +228,9 @@ public sealed partial class SingleMarkingPicker : BoxContainer
         ColorSelectorContainer.DisposeAllChildren();
         ColorSelectorContainer.RemoveAllChildren();
 
-        if (marking.MarkingColors.Count != proto.Sprites.Count)
+        if (marking.MarkingColors.Count != proto.ColorSlotCount)
         {
-            marking = new Marking(marking.MarkingId, proto.Sprites.Count);
+            marking = new Marking(marking.MarkingId, proto.GetColorSlotColors(marking.MarkingColors));
         }
 
         for (var i = 0; i < marking.MarkingColors.Count; i++)

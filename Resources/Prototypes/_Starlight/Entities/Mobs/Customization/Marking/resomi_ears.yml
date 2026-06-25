@@ -1,5 +1,5 @@
 - type: marking
-  id: ResomiEars
+  id: StarlightResomiEars
   bodyPart: HeadSide
   markingCategory: HeadSide
   speciesRestriction: [Resomi, ProtoResomi]
