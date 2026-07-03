@@ -128,7 +128,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         _sawmill.Info($"Player sent to perma: {ev.Player}");
     }
 
-    private EntityCoordinates? GetSpawnLocation()
+    private EntityCoordinates? GetSpawnLocation(string jobId)
     {
         var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
         var possiblePositions = new List<EntityCoordinates>();
@@ -136,7 +136,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         while (points.MoveNext(out var uid, out var spawnPoint, out var xform))
         {
             if (spawnPoint.SpawnType == SpawnPointType.Job &&
-                (spawnPoint.Job == "Prisoner"))
+                spawnPoint.Job == jobId)
             {
                 possiblePositions.Add(xform.Coordinates);
             }
@@ -163,22 +163,21 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         var newMind = _mind.CreateMind(data!.UserId, character.Name);
         _mind.SetUserId(newMind, data.UserId);
 
-        var jobPrototype = _prototypeManager.Index<JobPrototype>("Prisoner");
+        var jobId = inpatient ? "SanitariumPatient" : "Prisoner";
+        var jobPrototype = _prototypeManager.Index<JobPrototype>(jobId);
 
         _playTimeTrackings.PlayerRolesChanged(player);
-
-        GetSpawnLocation();
 
         EntityCoordinates? spawnLoc = null;
         EntityUid? mobMaybe = null;
 
-        spawnLoc = GetSpawnLocation();
+        spawnLoc = GetSpawnLocation(jobId);
 
         if (spawnLoc != null)
         {
             mobMaybe = _stationSpawning.SpawnPlayerMob(
                 spawnLoc.Value,
-                "Prisoner",
+            jobId,
                 character,
                 station);
             //Inpatients should spawn with a comfy straightjacket
@@ -190,7 +189,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         }
         else
         {
-            mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, "Prisoner", character);
+            mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, jobId, character);
         }
 
         DebugTools.AssertNotNull(mobMaybe);
@@ -219,7 +218,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         _mind.TransferTo(newMind, mob);
         _admin.UpdatePlayerList(player);
 
-        _roles.MindAddJobRole(newMind, silent: false, jobPrototype: "Prisoner");
+        _roles.MindAddJobRole(newMind, silent: false, jobPrototype: jobId);
 
         var briefing = Loc.GetString("perma-prisoner-briefing",
             ("minutes", brigTime));
@@ -238,7 +237,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
 
         var aev = new PlayerSpawnCompleteEvent(mob,
             player,
-            "Prisoner",
+            jobId,
             false,
             true,
             0,
