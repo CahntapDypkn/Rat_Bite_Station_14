@@ -13,6 +13,7 @@ public sealed class KetamineSedationSystem : EntitySystem
 
         SubscribeLocalEvent<KetamineSedationComponent, GetDoAfterDelayMultiplierEvent>(OnGetDoAfterDelayMultiplier);
         SubscribeLocalEvent<KetamineSedationComponent, UnbuckleAttemptEvent>(OnUnbuckleAttempt);
+        SubscribeLocalEvent<KetamineSedationComponent, UnCuffDoAfterEvent>(OnUncuffDoAfter);
         SubscribeLocalEvent<UnstrapAttemptEvent>(OnUnstrapAttempt);
         SubscribeLocalEvent<UncuffAttemptEvent>(OnUncuffAttempt);
     }
@@ -53,5 +54,15 @@ public sealed class KetamineSedationSystem : EntitySystem
             return;
 
         args.Cancelled = true;
+    }
+
+    private void OnUncuffDoAfter(Entity<KetamineSedationComponent> ent, ref UnCuffDoAfterEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        // Block the final completion step for self-unrestraining while sedated.
+        if (args.Args.User == ent.Owner)
+            args.Cancelled = true;
     }
 }
