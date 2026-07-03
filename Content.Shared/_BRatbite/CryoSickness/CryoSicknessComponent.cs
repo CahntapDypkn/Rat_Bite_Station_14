@@ -1,9 +1,11 @@
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Actions;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._BRatbite.CryoSickness;
 
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class CryoSicknessComponent : Component
 {
     [DataField]
@@ -21,7 +23,7 @@ public sealed partial class CryoSicknessComponent : Component
     [DataField]
     public float DamageResistance = 0.6f;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public TimeSpan ExpireTime;
 
     [DataField]
@@ -29,6 +31,16 @@ public sealed partial class CryoSicknessComponent : Component
 
     [DataField]
     public EntityUid? ActionEntity;
+
+    [DataField]
+    // Minimum damage per hit before the sickness is removed.
+    // Keep in mind, this is with the damage resistance already applied
+    // So it's actually 10
+    public FixedPoint2 MinDamageBeforeRemove = 4;
+
+    [DataField]
+    // Minimum total damage before the sickness is removed
+    public FixedPoint2 MinTotalDamageBeforeRemove = 15;
 }
 
 public sealed partial class ShakeAwakeEvent : InstantActionEvent;
