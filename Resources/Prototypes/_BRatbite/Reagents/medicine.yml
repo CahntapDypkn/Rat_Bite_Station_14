@@ -41,12 +41,11 @@
         component: SlurredAccent
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
-        time: 18
+        time: 3
         type: Add
-        refresh: false
+        refresh: true
       - !type:Drunk
-        boozePower: 35
-      - !type:Jitter
+        boozePower: 6
       - !type:MovespeedModifier
         walkSpeedModifier: 0.5
         sprintSpeedModifier: 0.5
