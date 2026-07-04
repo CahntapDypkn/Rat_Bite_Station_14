@@ -219,7 +219,7 @@
   - type: SpeakOnTrigger
     pack: PlushiesBatch
   - type: Speech
-    speechSounds: Bark
+    speechSounds: Vulpkanin
   - type: Clothing
     clothingVisuals:
       head:
