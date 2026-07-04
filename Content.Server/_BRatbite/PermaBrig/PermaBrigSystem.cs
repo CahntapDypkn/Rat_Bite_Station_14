@@ -163,7 +163,14 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         var newMind = _mind.CreateMind(data!.UserId, character.Name);
         _mind.SetUserId(newMind, data.UserId);
 
-        var jobId = inpatient ? "SanitariumPatient" : "Prisoner";
+        var jobId = "Prisoner";
+        if (inpatient)
+        {
+            jobId = _prototypeManager.HasIndex<JobPrototype>("SanitariumPatient")
+                ? "SanitariumPatient"
+                : "Prisoner";
+        }
+
         var jobPrototype = _prototypeManager.Index<JobPrototype>(jobId);
 
         _playTimeTrackings.PlayerRolesChanged(player);

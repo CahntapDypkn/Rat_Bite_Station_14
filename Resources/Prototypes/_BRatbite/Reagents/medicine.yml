@@ -41,15 +41,16 @@
         component: SlurredAccent
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
-        time: 3
+        time: 16
         type: Add
         refresh: true
       - !type:Drunk
-        boozePower: 6
+        boozePower: 3
       - !type:MovespeedModifier
         walkSpeedModifier: 0.5
         sprintSpeedModifier: 0.5
       - !type:GenericStatusEffect
         key: KetamineSedation
         component: KetamineSedation
-        time: 2
+        time: 60
+        refresh: false

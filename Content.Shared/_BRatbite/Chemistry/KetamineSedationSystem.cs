@@ -1,21 +1,34 @@
 using Content.Shared._Shitmed.DoAfter;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.Cuffs;
+using Content.Shared.Inventory.Events;
 
 namespace Content.Shared._BRatbite.Chemistry;
 
 public sealed class KetamineSedationSystem : EntitySystem
 {
+    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
+
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<KetamineSedationComponent, GetDoAfterDelayMultiplierEvent>(OnGetDoAfterDelayMultiplier);
-        SubscribeLocalEvent<KetamineSedationComponent, UnbuckleAttemptEvent>(OnUnbuckleAttempt);
-        SubscribeLocalEvent<KetamineSedationComponent, UnCuffDoAfterEvent>(OnUncuffDoAfter);
+        SubscribeLocalEvent<UnbuckleAttemptEvent>(OnUnbuckleAttempt);
+        SubscribeLocalEvent<UnCuffDoAfterEvent>(OnUncuffDoAfter);
         SubscribeLocalEvent<UnstrapAttemptEvent>(OnUnstrapAttempt);
         SubscribeLocalEvent<UncuffAttemptEvent>(OnUncuffAttempt);
+        SubscribeLocalEvent<IsUnequippingAttemptEvent>(OnIsUnequippingAttempt);
+    }
+
+    private bool HasActiveKetamine(EntityUid uid)
+    {
+        if (HasComp<KetamineSedationComponent>(uid))
+            return true;
+
+        return _solutions.GetTotalPrototypeQuantity(uid, "Ketamine").Float() > 0.01f;
     }
 
     private void OnGetDoAfterDelayMultiplier(Entity<KetamineSedationComponent> ent, ref GetDoAfterDelayMultiplierEvent args)
@@ -28,15 +41,21 @@ public sealed class KetamineSedationSystem : EntitySystem
         if (args.Cancelled || args.User != args.Target)
             return;
 
-        if (!HasComp<KetamineSedationComponent>(args.User))
+        if (!HasActiveKetamine(args.User))
             return;
 
         args.Cancelled = true;
     }
 
-    private void OnUnbuckleAttempt(Entity<KetamineSedationComponent> ent, ref UnbuckleAttemptEvent args)
+    private void OnUnbuckleAttempt(ref UnbuckleAttemptEvent args)
     {
-        if (args.Cancelled || args.User != ent.Owner)
+        if (args.Cancelled || args.User == null)
+            return;
+
+        if (args.User != args.Buckle.Owner)
+            return;
+
+        if (!HasActiveKetamine(args.User.Value))
             return;
 
         args.Cancelled = true;
@@ -50,19 +69,46 @@ public sealed class KetamineSedationSystem : EntitySystem
         if (args.User != args.Buckle.Owner)
             return;
 
-        if (!HasComp<KetamineSedationComponent>(args.User.Value))
+        if (!HasActiveKetamine(args.User.Value))
             return;
 
         args.Cancelled = true;
     }
 
-    private void OnUncuffDoAfter(Entity<KetamineSedationComponent> ent, ref UnCuffDoAfterEvent args)
+    private void OnUncuffDoAfter(UnCuffDoAfterEvent args)
     {
         if (args.Cancelled)
             return;
 
+        if (args.Args.Target is not { } target)
+            return;
+
+        var user = args.Args.User;
+        if (user != target)
+            return;
+
+        if (!HasActiveKetamine(user))
+            return;
+
         // Block the final completion step for self-unrestraining while sedated.
-        if (args.Args.User == ent.Owner)
-            args.Cancelled = true;
+        args.Handled = true;
+    }
+
+    private void OnIsUnequippingAttempt(IsUnequippingAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (args.Unequipee != args.UnEquipTarget)
+            return;
+
+        if (!HasActiveKetamine(args.Unequipee))
+            return;
+
+        // Straightjacket / restraint-like items can be removed through inventory unequip paths.
+        if (!HasComp<HandcuffComponent>(args.Equipment))
+            return;
+
+        args.Cancel();
     }
 }
