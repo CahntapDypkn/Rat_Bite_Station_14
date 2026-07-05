@@ -13,7 +13,7 @@
 - type: gamePreset
   id: SusRat
   name: SusRat
-  showInVote: false #pending highpop rework
+  showInVote: true
   description: The antag could be any one of us...He could be you!
   rules:
     - PermaBrig # Needed
