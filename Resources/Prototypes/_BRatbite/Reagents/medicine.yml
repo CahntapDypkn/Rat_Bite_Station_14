@@ -330,3 +330,65 @@
         - !type:AdjustReagent
           amount: -50
           reagent: Chornexalinn
+
+- type: reagent
+  id: Tepalal
+  name: reagent-name-tepalal
+  group: Medicine
+  desc: reagent-desc-tepalal
+  physicalDesc: reagent-physical-desc-viscous
+  flavor: medicine
+  color: "#21153b"
+  plantMetabolism:
+    - !type:PlantAdjustWeeds
+      amount: -8
+    - !type:PlantAdjustHealth
+      amount: -20
+  worksOnTheDead: true
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+      - !type:HealthChange
+        scaleByQuantity: true
+        ignoreResistances: false
+        ignoreBlockers: false
+        damage:
+          groups:
+            Brute: -1.5 
+          types:
+            Heat: -0.5
+            Cold: -0.5
+            Shock: -0.5
+        conditions:
+        - !type:HasComponentOnEquipmentCondition
+          components:
+          - type: PressureProtection # can't get through this to reach the bodyparts!
+          invert: true
+      - !type:ModifyBleedAmount
+        amount: -2
+        conditions:
+        - !type:HasComponentOnEquipmentCondition
+          components:
+          - type: PressureProtection
+          invert: true
+  metabolisms:
+    Poison:
+      metabolismRate: 3
+      effects:
+        - !type:HealthChange
+          damage:
+            groups:
+              Brute: -1.5 
+            types:
+              Heat: -0.5
+              Cold: -0.5
+              Shock: -0.5
+        - !type:HealthChange
+          conditions:
+            - !type:OrganType
+              type: Yowie
+              shouldHave: false
+          damage:
+            types:
+              Poison: 2

@@ -103,3 +103,15 @@
       amount: 1
   products:
     Chornexalinn: 5
+
+- type: reaction
+  id: Tepalal
+  reactants:
+    Tricordrazine:
+      amount: 1
+    Lenturi:
+      amount: 1
+    Slime:
+      amount: 1
+  products:
+    Tepalal: 3

@@ -14,3 +14,5 @@ reagent-name-lectrazine = lectrazine
 reagent-desc-lectrazine = Originally developed by Terragov chemists before their venture to Tau-Ceti as an easy way for astronauts to continue EVA maintenance tasks for a few more minutes without the need for a spare oxygen tank. It completely halts standard breathing and introduces the bloodstream to oxygen and saline without a need for lungs, overdosing causes nitrogen deficiency
 reagent-name-chornexalinn = chornexalinn
 reagent-desc-chornexalinn = An advanced radiation medication developed to be used in autoinjectors during the early colonisation of tau-ceti, though quickly replaced with potassium iodide and arithrazine due to being too expensive to produce quickly. This drug reacts extremely violently with the blood, allowing it to quickly make its way around the body without the need for a heart to pump it and rapidly rejuvinates already existing cells and kills cancer cells.
+reagent-name-tepalal = tepalal
+reagent-desc-tepalal = A commonly used and externally applied medication. Toxic when in the bloodstream. Works on dead.
