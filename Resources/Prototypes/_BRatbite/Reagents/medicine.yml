@@ -130,3 +130,43 @@
           conditions:
           - !type:ReagentThreshold
             min: 20
+
+- type: reagent
+  id: Lenturi
+  name: reagent-name-lenturi
+  group: Medicine
+  desc: reagent-desc-lenturi
+  physicalDesc: reagent-physical-desc-tropical
+  flavor: medicine
+  color: "#634aef"
+  metabolisms:
+    Medicine:
+      effects:
+        - !type:HealthChange
+          conditions: # yes i know i can just make it do more for OD, but this makes it more understandable in the guidebook
+          - !type:ReagentThreshold
+            max: 20
+          damage:
+            types:
+              Heat: -0.8
+              Shock: -0.8
+              Cold: -0.8
+        - !type:HealthChange
+          conditions:
+          - !type:ReagentThreshold
+            min: 20
+          damage:
+            types:
+              Heat: -1.2
+              Shock: -1.2
+              Cold: -1.2
+        - !type:SatiateThirst
+          conditions:
+          - !type:ReagentThreshold
+            min: 20
+          factor: -4
+        - !type:Jitter
+          conditions:
+          - !type:ReagentThreshold
+            min: 20
+        

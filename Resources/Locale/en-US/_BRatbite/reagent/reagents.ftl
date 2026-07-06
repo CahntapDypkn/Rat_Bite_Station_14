@@ -4,3 +4,5 @@ reagent-name-ketamine = ketamine
 reagent-desc-ketamine = A heavy dissociative sedative that leaves patients dazed, slow, and unable to properly fight restraints.
 reagent-name-libital = libital
 reagent-desc-libital = A common but weak medicine used to heal brute trauma. Usually paired with other chemicals.
+reagent-name-lenturi = lenturi
+reagent-desc-lenturi = A common chemical that is effective at treating burn damage. At high dosages, it uses the water in your body to accelerate healing.

@@ -27,3 +27,27 @@
       catalyst: true
   products:
     Ketamine: 3
+
+- type: reaction
+  id: Libital
+  reactants:
+    WeldingFuel:
+      amount: 1
+    Saline:
+      amount: 1
+    Ethanol:
+      amount: 1
+  products:
+    Libital: 3
+
+- type: reaction
+  id: Lenturi
+  reactants:
+    Dexalin:
+      amount: 1
+    Sugar:
+      amount: 1
+    Ash:
+      amount: 1
+  products:
+    Lenturi: 3
