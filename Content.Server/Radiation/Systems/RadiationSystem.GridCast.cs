@@ -35,8 +35,7 @@ public partial class RadiationSystem
     private readonly record struct SourceData(
         float Intensity,
         Entity<RadiationSourceComponent, TransformComponent> Entity,
-        Vector2 WorldPosition,
-        bool IsBananiumSource
+        Vector2 WorldPosition
     )
     {
         public EntityUid? GridUid => Entity.Comp2.GridUid;
@@ -76,11 +75,11 @@ public partial class RadiationSystem
             // I.e., a source & receiver in the same blocking container will get double-blocked, when no blocking should be applied.
             intensity = GetAdjustedRadiationIntensity(uid, intensity);
 
-            _sources.Add(new(intensity, (uid, source, xform), worldPos, HasComp<BananiumRadiationSourceComponent>(uid)));
+            _sources.Add(new(intensity, (uid, source, xform), worldPos));
         }
 
         var debugRays = debug ? new List<DebugRadiationRay>() : null;
-        var receiversTotalRads = new ValueList<(Entity<RadiationReceiverComponent>, float Total, float Bananium)>();
+        var receiversTotalRads = new ValueList<(Entity<RadiationReceiverComponent>, float)>();
 
         // TODO RADIATION Parallelize
         // Would need to give receiversTotalRads a fixed size.
@@ -92,12 +91,10 @@ public partial class RadiationSystem
             var destWorld = _transform.GetWorldPosition(destTrs);
 
             var rads = 0f;
-            var bananiumRads = 0f;
             foreach (var source in _sources)
             {
                 // Ratbite: Thick skin component
-                var blocksWeakSource = source.IsWeakSource && HasComp<ThickSkinComponent>(destUid);
-                if (blocksWeakSource && !source.IsBananiumSource)
+                if (source.IsWeakSource && HasComp<ThickSkinComponent>(destUid))
                     continue;
                 // send ray towards destination entity
                 if (Irradiate(source, destUid, destTrs, destWorld, debug) is not { } ray)
@@ -105,13 +102,7 @@ public partial class RadiationSystem
 
                 // add rads to total rad exposure
                 if (ray.ReachedDestination)
-                {
-                    if (!blocksWeakSource)
-                        rads += ray.Rads;
-
-                    if (source.IsBananiumSource)
-                        bananiumRads += ray.Rads;
-                }
+                    rads += ray.Rads;
 
                 if (!debug)
                     continue;
@@ -129,9 +120,8 @@ public partial class RadiationSystem
 
             // Apply modifier if the destination entity is hidden within a radiation blocking container
             rads = GetAdjustedRadiationIntensity(destUid, rads);
-            bananiumRads = GetAdjustedRadiationIntensity(destUid, bananiumRads);
 
-            receiversTotalRads.Add(((destUid, dest), rads, bananiumRads));
+            receiversTotalRads.Add(((destUid, dest), rads));
         }
 
         // update information for debug overlay
@@ -141,7 +131,7 @@ public partial class RadiationSystem
         UpdateGridcastDebugOverlay(elapsedTime, totalSources, totalReceivers, debugRays);
 
         // send rads to each entity
-        foreach (var (receiver, rads, bananiumRads) in receiversTotalRads)
+        foreach (var (receiver, rads) in receiversTotalRads)
         {
             // update radiation value of receiver
             // if no radiation rays reached target, that will set it to 0
@@ -150,12 +140,6 @@ public partial class RadiationSystem
             // also send an event with combination of total rad
             if (rads > 0)
                 IrradiateEntity(receiver, rads, GridcastUpdateRate);
-
-            if (bananiumRads > 0)
-            {
-                var ev = new BananiumIrradiatedEvent(GridcastUpdateRate, bananiumRads);
-                RaiseLocalEvent(receiver, ev);
-            }
         }
 
         // raise broadcast event that radiation system has updated
