@@ -163,13 +163,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         var newMind = _mind.CreateMind(data!.UserId, character.Name);
         _mind.SetUserId(newMind, data.UserId);
 
-        var jobId = "Prisoner";
-        if (inpatient)
-        {
-            jobId = _prototypeManager.HasIndex<JobPrototype>("SanitariumPatient")
-                ? "SanitariumPatient"
-                : "Prisoner";
-        }
+        var jobId = inpatient ? "SanitariumPatient" : "Prisoner";
 
         _playTimeTrackings.PlayerRolesChanged(player);
 
@@ -178,8 +172,9 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
 
         spawnLoc = GetSpawnLocation(jobId);
 
-        if (inpatient && jobId == "SanitariumPatient" && spawnLoc == null)
+        if (inpatient && spawnLoc == null)
         {
+            _sawmill.Warning("No spawn loc found for sanitarium patient");
             // If no sanitarium spawnpoint exists, use Prisoner spawn routing instead of station fallback.
             jobId = "Prisoner";
             spawnLoc = GetSpawnLocation(jobId);
@@ -191,7 +186,7 @@ public sealed class PermaBrigSystem : GameRuleSystem<PermaBrigComponent>
         {
             mobMaybe = _stationSpawning.SpawnPlayerMob(
                 spawnLoc.Value,
-            jobId,
+                jobId,
                 character,
                 station);
         }
