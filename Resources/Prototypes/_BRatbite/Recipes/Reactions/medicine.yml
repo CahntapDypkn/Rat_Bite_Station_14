@@ -27,3 +27,13 @@
       catalyst: true
   products:
     Ketamine: 3
+
+- type: reaction
+  id: KetamineNeutralized
+  reactants:
+    Ketamine:
+      amount: 1
+    FoamingAgent:
+      amount: 1
+  products:
+    Water: 2
