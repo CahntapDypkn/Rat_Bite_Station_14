@@ -79,12 +79,7 @@
   - type: Speech
     speechVerb: Wawa
     speechSounds: Wawa
-    allowedEmotes: ['Thump', 'Chirp', 'Trill', 'Warble', 'Wurble', 'Mars'] # They're 80% tail, but singers still need singer emotes.
-  - type: UserInterface
-    interfaces:
-      enum.InstrumentUiKey.Key:
-        type: InstrumentBoundUserInterface
-        requireInputValidation: false
+    allowedEmotes: ["Thump"] # They're 80% tail
   - type: TypingIndicator
     proto: moth
   - type: InteractionPopup
