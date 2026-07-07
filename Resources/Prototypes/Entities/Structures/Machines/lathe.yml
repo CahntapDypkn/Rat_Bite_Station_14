@@ -319,6 +319,12 @@
     boardName: wires-board-name-lathe
     layoutId: Lathe
   - type: BoltableMachine # Ratbite
+    bolted: false
+  - type: DeviceLinkSink # Ratbite
+    ports:
+    - On
+    - Off
+    - Toggle
   - type: ActivatableUI
     key: enum.LatheUiKey.Key
   - type: ActivatableUIRequiresPower
@@ -692,7 +698,6 @@
     guides:
     - Robotics
   - type: AccessReader # Ratbite: Add access reader to fabs
-    access: [["Research"]]
 
 - type: entity
   id: Biofabricator
@@ -737,7 +742,6 @@
     # Goobstation Packs
     - EmagCubesStatic
   - type: AccessReader # Ratbite: Add access reader to fabs
-    access: [["Medical"]]
 
 - type: entity
   id: SecurityTechFab
@@ -977,6 +981,7 @@
         - Sheet
         - RawMaterial
         - Ingot
+  - type: AccessReader # Ratbite: Add access reader to fabs
 
 - type: entity
   id: Biogenerator
@@ -1020,6 +1025,7 @@
     staticPacks:
     - BioGenIngredientsStatic
     - BioGenMaterialsStatic
+  - type: AccessReader # Ratbite: Add access reader to fabs
 
 - type: entity
   parent: [BaseLathe, BaseSiloUtilizer] # Goob edit
@@ -1065,7 +1071,6 @@
     - type: MiningPointsLathe # DeltaV
     - type: MaterialStorageMagnetPickup # Frontier
     - type: AccessReader # Ratbite: Add access reader to fabs
-      access: [["Cargo"]]
 
 - type: entity
   parent: OreProcessor

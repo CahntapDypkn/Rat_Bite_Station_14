@@ -190,7 +190,7 @@ namespace Content.Shared.Humanoid.Markings
                 return false;
             }
 
-            if (marking.MarkingColors.Count != proto.Sprites.Count)
+            if (marking.MarkingColors.Count != proto.ColorSlotCount)
             {
                 return false;
             }

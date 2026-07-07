@@ -354,6 +354,13 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
         visible &= humanoid.BaseLayers.TryGetValue(markingPrototype.BodyPart, out var setting)
            && setting.AllowsMarkings;
 
+        // Starlight start - allow split marking sprites to render at different humanoid layer anchors.
+        var layerOverrides = markingPrototype.SpriteLayers is { Count: > 0 }
+            ? markingPrototype.SpriteLayers
+            : null;
+        var bodyPartInsertionOffset = 0;
+        // Starlight end
+
         for (var j = 0; j < markingPrototype.Sprites.Count; j++)
         {
             var markingSprite = markingPrototype.Sprites[j];
@@ -364,21 +371,42 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
             }
 
             var layerId = $"{markingPrototype.ID}-{rsi.RsiState}";
+            var anchorLayer = markingPrototype.BodyPart;
+            var insertionIndex = targetLayer + j + 1;
+
+            if (layerOverrides != null)
+            {
+                if (j < layerOverrides.Count)
+                    anchorLayer = layerOverrides[j];
+
+                if (!_sprite.LayerMapTryGet((entity.Owner, sprite), anchorLayer, out var anchorLayerIndex, false))
+                    continue;
+
+                if (anchorLayer == markingPrototype.BodyPart)
+                {
+                    insertionIndex = anchorLayerIndex + bodyPartInsertionOffset + 1;
+                    bodyPartInsertionOffset++;
+                }
+                else
+                {
+                    insertionIndex = anchorLayerIndex;
+                }
+            }
 
             if (!_sprite.LayerMapTryGet((entity.Owner, sprite), layerId, out var layer, false)) // Goob edit
             {
-                layer = _sprite.AddLayer((entity.Owner, sprite), markingSprite, targetLayer + j + 1); // Goob edit
+                layer = _sprite.AddLayer((entity.Owner, sprite), markingSprite, insertionIndex); // Goob edit
                 _sprite.LayerMapSet((entity.Owner, sprite), layerId, layer);
                 _sprite.LayerSetSprite((entity.Owner, sprite), layerId, rsi);
             }
 
-            var hasInfo = humanoid.CustomBaseLayers.TryGetValue(markingPrototype.BodyPart, out var info); // Goobstation
+            var hasInfo = humanoid.CustomBaseLayers.TryGetValue(anchorLayer, out var info); // Goobstation
             // impstation edit begin - check if there's a shader defined in the markingPrototype's shader datafield, and if there is...
-			if (markingPrototype.Shader != null)
-			{
-			// use spriteComponent's layersetshader function to set the layer's shader to that which is specified.
-				sprite.LayerSetShader(layer, markingPrototype.Shader); // Goob edit
-			}
+            if (markingPrototype.Shader != null)
+            {
+                // use spriteComponent's layersetshader function to set the layer's shader to that which is specified.
+                sprite.LayerSetShader(layer, markingPrototype.Shader); // Goob edit
+            }
             else // Goobstation
             {
                 if (hasInfo && info.Shader != null)
@@ -386,11 +414,16 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
                 else
                     sprite.LayerSetShader(layer, null, null);
             }
-			// impstation edit end
+            // impstation edit end
 
-            _sprite.LayerSetVisible((entity.Owner, sprite), layerId, visible);
+            var layerVisible = visible;
+            layerVisible &= !IsHidden(humanoid, anchorLayer);
+            layerVisible &= humanoid.BaseLayers.TryGetValue(anchorLayer, out var anchorSetting)
+                && anchorSetting.AllowsMarkings;
 
-            if (!visible || setting == null) // this is kinda implied
+            _sprite.LayerSetVisible((entity.Owner, sprite), layerId, layerVisible);
+
+            if (!layerVisible || setting == null) // this is kinda implied
             {
                 continue;
             }
@@ -398,10 +431,11 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
             // Okay so if the marking prototype is modified but we load old marking data this may no longer be valid
             // and we need to check the index is correct.
             // So if that happens just default to white?
-            if (colors != null && j < colors.Count)
+            var colorIndex = markingPrototype.GetColorIndex(j);
+            if (colors != null && colorIndex >= 0 && colorIndex < colors.Count)
             {
                 // Goob edit start
-                var color = colors[j];
+                var color = colors[colorIndex];
                 if (hasInfo && info.Color != null)
                     color = Color.InterpolateBetween(color, info.Color.Value, 0.5f);
                 _sprite.LayerSetColor((entity.Owner, sprite), layerId, color);
@@ -417,9 +451,9 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
                 // Goob edit end
             }
 
-            if (humanoid.MarkingsDisplacement.TryGetValue(markingPrototype.BodyPart, out var displacementData) && markingPrototype.CanBeDisplaced)
+            if (humanoid.MarkingsDisplacement.TryGetValue(anchorLayer, out var displacementData) && markingPrototype.CanBeDisplaced)
             {
-                _displacement.TryAddDisplacement(displacementData, (entity.Owner, sprite), targetLayer + j + 1, layerId, out _);
+                _displacement.TryAddDisplacement(displacementData, (entity.Owner, sprite), insertionIndex, layerId, out _);
             }
         }
     }
@@ -474,8 +508,14 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
         {
             foreach (var marking in markingList)
             {
-                if (_markingManager.TryGetMarking(marking, out var markingPrototype) && markingPrototype.BodyPart == layer)
+                if (!_markingManager.TryGetMarking(marking, out var markingPrototype))
+                    continue;
+
+                if (markingPrototype.BodyPart == layer ||
+                    markingPrototype.SpriteLayers?.Contains(layer) == true)
+                {
                     ApplyMarking(markingPrototype, marking.MarkingColors, marking.Visible, (ent, ent.Comp, sprite));
+                }
             }
         }
     }
