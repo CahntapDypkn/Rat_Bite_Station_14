@@ -80,8 +80,9 @@ public sealed partial class AccessibilityTab : Control
         Control.AddOptionColorSlider(CCVars.ChatHighlightsColor, HighlightsColorSlider);
         // Goobstation - Highight chat ping sounds!
         Control.AddOptionCheckBox(CCVars.ChatHighlightSound, HighlightSoundCheckBox);
-        // Ratbite: Pointer slider
+        // Ratbite: Pointer slider and outline
         Control.AddOptionPercentSlider(RatbiteCVars.PointerScale, PointerScaleSlider, min: 0.5f, max: 3f);
+        Control.AddOptionCheckBox(RatbiteCVars.PointerOutline, PointerOutlineCheckBox);
 
         Control.Initialize();
     }

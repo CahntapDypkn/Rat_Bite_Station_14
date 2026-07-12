@@ -13,20 +13,23 @@ public sealed partial class PointingSystem : SharedPointingSystem
 
     public void SubscribeCVars()
     {
-        _cfg.OnValueChanged(RatbiteCVars.PointerScale, value => ScaleAllPointers(value));
+        _cfg.OnValueChanged(RatbiteCVars.PointerScale, value => ScaleAllPointers());
+        _cfg.OnValueChanged(RatbiteCVars.PointerOutline, value => ScaleAllPointers());
     }
 
-    private void ScaleAllPointers(float scale)
+    private void ScaleAllPointers()
     {
         var enumerator = EntityQueryEnumerator<PointingArrowComponent, SpriteComponent>();
-        while (enumerator.MoveNext(out var uid, out var _, out var sprite))
+        while (enumerator.MoveNext(out var uid, out var pointer, out var sprite))
         {
-            _sprite.SetScale((uid, sprite), Vector2.One * scale);
+            ScalePointer((uid, pointer, sprite));
         }
     }
 
     private void ScalePointer(Entity<PointingArrowComponent, SpriteComponent> ent)
     {
         _sprite.SetScale((ent, ent.Comp2), Vector2.One * _cfg.GetCVar(RatbiteCVars.PointerScale));
+        var index = _sprite.LayerMapReserve((ent, ent.Comp2), ent.Comp1.OutlineLayer);
+        _sprite.LayerSetVisible((ent, ent.Comp2), index, _cfg.GetCVar(RatbiteCVars.PointerOutline));
     }
 }
