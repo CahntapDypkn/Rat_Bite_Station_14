@@ -1,10 +1,13 @@
 # Used by Binglekind.
 - type: language
   id: Bingle
+  isVisibleLanguage: true
   speech:
     color: "#008080"
   obfuscation:
     !type:ReplacementObfuscation
+    minSyllables: 1
+    maxSyllables: 3
     replacement:
     - Bingle
     - Bongle
