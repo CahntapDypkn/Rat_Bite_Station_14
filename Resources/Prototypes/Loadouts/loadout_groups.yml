@@ -1282,6 +1282,11 @@
   - HeadofSecurityHead
   - HeadofSecurityBeret
   - HeadofSecuritySpecialBeret # Goobstation
+  - SecurityHelmet
+  - SecurityHelmetAlt # Goobstation
+  - SecurityBeret
+  - SecurityHat
+  - TrooperHat
 
 - type: loadoutGroup
   id: HeadofSecurityJumpsuit
@@ -1321,6 +1326,11 @@
   - WardenHelmet #Ratbite
   - WardenHead
   - WardenBeret
+  - SecurityHelmet
+  - SecurityHelmetAlt # Goobstation
+  - SecurityBeret
+  - SecurityHat
+  - TrooperHat
 
 - type: loadoutGroup
   id: WardenJumpsuit
@@ -1410,6 +1420,11 @@
   loadouts:
   - DetectiveFedora
   - DetectiveFedoraGrey
+  - SecurityHelmet
+  - SecurityHelmetAlt # Goobstation
+  - SecurityBeret
+  - SecurityHat
+  - TrooperHat
 
 - type: loadoutGroup
   id: DetectiveNeck

@@ -71,6 +71,11 @@
   loadouts:
   - RedsightOverseerLawHelm
   - RedsightOverseerCap
+  - SecurityHelmet
+  - SecurityHelmetAlt # Goobstation
+  - SecurityBeret
+  - SecurityHat
+  - TrooperHat
 
 - type: loadoutGroup
   id: RedsightOverseerJumpsuit

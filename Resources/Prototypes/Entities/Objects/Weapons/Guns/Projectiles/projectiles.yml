@@ -609,7 +609,7 @@
     impactEffect: BulletImpactEffectKinetic
     damage:
       types:
-        Blunt: 15 # Ratbite kill dam
+        Blunt: 8 # Ratbite kill dam
         Structural: 20 # Ratbite re add
         armorPenetration: -0.5 # Ratbite, balance against antags/sec still a murder weapon keep away from tidas
   # Short lifespan
